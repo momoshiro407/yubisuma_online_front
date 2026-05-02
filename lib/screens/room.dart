@@ -30,6 +30,7 @@ class _RoomState extends State<Room> {
     _ws.connect(widget.roomId, widget.playerName);
 
     _ws.stream?.listen((message) {
+      print("RECEIVED: $message");
       final data = jsonDecode(message);
 
       if (data['type'] == 'room_state') {
@@ -48,6 +49,9 @@ class _RoomState extends State<Room> {
               roomId: widget.roomId,
               playerName: widget.playerName,
               ws: _ws,
+              players: List<String>.from(data['players']),
+              hands: Map<String, dynamic>.from(data['hands']),
+              currentTurn: data['current_turn'],
             ),
           ),
         );
